@@ -1,7 +1,7 @@
 package com.pontoclock.helpdeskapi.api.service;
 
-import com.pontoclock.helpdeskapi.api.models.TicketDTO;
+import com.pontoclock.helpdeskapi.api.models.entities.Ticket;
 
 public interface TicketService {
-    TicketDTO create(TicketDTO ticketDTO);
+    Ticket create(Ticket ticket);
 }

@@ -3,6 +3,7 @@ package com.pontoclock.helpdeskapi.api.resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pontoclock.helpdeskapi.api.models.TicketDTO;
+import com.pontoclock.helpdeskapi.api.models.entities.Ticket;
 import com.pontoclock.helpdeskapi.api.service.TicketService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,13 @@ public class TicketControllerTest {
                     .titulo("titulo ticket")
                     .descricao("descrição ticket")
                     .build();
+
+    Ticket ticket =
+            Ticket.builder()
+                    .id(1l)
+                    .titulo("titulo ticket")
+                    .descricao("descrição ticket")
+                    .build();
     @Autowired
     MockMvc mockMvc;
 
@@ -44,7 +52,7 @@ public class TicketControllerTest {
     @DisplayName("Deve criar um livro com sucesso.")
     public void createTicketTest() throws Exception {
 
-        BDDMockito.given(ticketService.create(Mockito.any(TicketDTO.class))).willReturn(this.ticketDTO);
+        BDDMockito.given(ticketService.create(Mockito.any(Ticket.class))).willReturn(this.ticket);
         String json = new ObjectMapper().writeValueAsString(this.ticketDTO);
 
         MockHttpServletRequestBuilder request =
