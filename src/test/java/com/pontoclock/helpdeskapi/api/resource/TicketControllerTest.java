@@ -3,12 +3,16 @@ package com.pontoclock.helpdeskapi.api.resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pontoclock.helpdeskapi.api.models.TicketDTO;
+import com.pontoclock.helpdeskapi.api.service.TicketService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -33,11 +37,15 @@ public class TicketControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @MockBean
+    TicketService ticketService;
+
     @Test
     @DisplayName("Deve criar um livro com sucesso.")
     public void createTicketTest() throws Exception {
 
-        String json = new ObjectMapper().writeValueAsString(null);
+        BDDMockito.given(ticketService.create(Mockito.any(TicketDTO.class))).willReturn(this.ticketDTO);
+        String json = new ObjectMapper().writeValueAsString(this.ticketDTO);
 
         MockHttpServletRequestBuilder request =
                 MockMvcRequestBuilders

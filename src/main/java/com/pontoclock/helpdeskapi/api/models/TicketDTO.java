@@ -17,6 +17,5 @@ public class TicketDTO {
 
     private Long id;
     private String titulo;
-
     private String descricao;
 }
