@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @Data
 @NoArgsConstructor
 @Builder
@@ -15,7 +18,10 @@ public class TicketDTO {
         this.descricao = descricao;
     }
 
+    @NotNull
     private Long id;
+    @NotNull
     private String titulo;
+    @NotNull
     private String descricao;
 }

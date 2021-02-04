@@ -71,6 +71,19 @@ public class TicketControllerTest {
 
     @Test
     @DisplayName("Deve lançar erro ao tentar salvar Ticket com dados inválidos")
-    public void createInvalidTicketTest() {
+    public void createInvalidTicketTest() throws Exception {
+        BDDMockito.given(ticketService.create(Mockito.any(Ticket.class))).willReturn(this.ticket);
+        String json = new ObjectMapper().writeValueAsString(new TicketDTO());
+
+        MockHttpServletRequestBuilder request =
+                MockMvcRequestBuilders
+                        .post(TICKET_ENDPOINT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(json);
+
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("errors").exists());
     }
 }
