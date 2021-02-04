@@ -2,9 +2,8 @@ package com.pontoclock.helpdeskapi.api.service;
 
 import com.pontoclock.helpdeskapi.api.exceptions.BusinessException;
 import com.pontoclock.helpdeskapi.api.models.entities.Ticket;
-import com.pontoclock.helpdeskapi.api.repositories.TicketRepository;
+import com.pontoclock.helpdeskapi.api.repository.TicketRepository;
 import com.pontoclock.helpdeskapi.api.service.impl.TicketServiceImpl;
-import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
