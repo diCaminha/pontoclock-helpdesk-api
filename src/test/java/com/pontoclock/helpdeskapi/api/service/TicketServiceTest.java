@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
@@ -67,5 +68,19 @@ public class TicketServiceTest {
         assertThat(exception)
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("Titulo e Descrição não podem serem iguais.");
+    }
+
+    @Test
+    @DisplayName("Deve lançar erro caso tente salvar ticket com titulo que já exista")
+    public void criarTicketComTituloExistente() {
+
+        Ticket ticket = Ticket.builder().titulo("titulo").descricao("descricao").build();
+        Mockito.when(this.ticketRepository.existsByTitulo(ticket.getTitulo())).thenReturn(true);
+
+        Throwable exception = Assertions.catchThrowable(() -> this.ticketService.create(ticket));
+        assertThat(exception)
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("Já existe um ticket com esse título.");
+
     }
 }
