@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Builder
 public class TicketDTO {
 
-    @Builder
     public TicketDTO(Long id, String titulo, String descricao) {
         this.id = id;
         this.titulo = titulo;
@@ -17,5 +17,6 @@ public class TicketDTO {
 
     private Long id;
     private String titulo;
+
     private String descricao;
 }

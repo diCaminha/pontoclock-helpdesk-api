@@ -2,6 +2,7 @@ package com.pontoclock.helpdeskapi.api.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pontoclock.helpdeskapi.api.models.TicketDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +24,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class TicketControllerTest {
 
     static String TICKET_ENDPOINT = "/api/tickets";
-
+    TicketDTO ticketDTO =
+            TicketDTO.builder()
+                    .id(1l)
+                    .titulo("titulo ticket")
+                    .descricao("descrição ticket")
+                    .build();
     @Autowired
     MockMvc mockMvc;
 
@@ -42,9 +48,9 @@ public class TicketControllerTest {
         mockMvc
                 .perform(request)
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect( MockMvcResultMatchers.jsonPath("id").isNotEmpty())
-                .andExpect( MockMvcResultMatchers.jsonPath("titulo").isNotEmpty())
-                .andExpect( MockMvcResultMatchers.jsonPath("descricao").isNotEmpty());
+                .andExpect(MockMvcResultMatchers.jsonPath("id").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("titulo").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("descricao").isNotEmpty());
     }
 
     @Test

@@ -12,5 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/tickets")
 public class TicketController {
 
-
+    @PostMapping
+    public ResponseEntity<TicketDTO> create() {
+        TicketDTO ticketDTO =
+                TicketDTO.builder()
+                        .id(1l)
+                        .titulo("ticket titulo")
+                        .descricao("descrição do ticket")
+                        .build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(ticketDTO);
+    }
 }
