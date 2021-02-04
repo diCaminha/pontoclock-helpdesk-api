@@ -1,9 +1,11 @@
 package com.pontoclock.helpdeskapi.api.service;
 
+import com.pontoclock.helpdeskapi.api.exceptions.BusinessException;
 import com.pontoclock.helpdeskapi.api.models.entities.Ticket;
 import com.pontoclock.helpdeskapi.api.repositories.TicketRepository;
 import com.pontoclock.helpdeskapi.api.service.impl.TicketServiceImpl;
 import org.aspectj.lang.annotation.Before;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,5 +51,22 @@ public class TicketServiceTest {
         assertThat(savedTicket.getId()).isNotNull();
         assertThat(savedTicket.getId().equals(10l));
         assertThat(savedTicket.getTitulo().equals("tarefa teste"));
+    }
+
+    @Test
+    @DisplayName("Deve lançar erro de negocio caso titulo e descrição do ticket sejam iguais")
+    public void salvarTicketComTituloEDescricaoIguais() {
+        Ticket ticket = new Ticket();
+        String tituloTicket = "Titulo Ticket";
+        ticket.setTitulo(tituloTicket);
+        ticket.setDescricao(tituloTicket);
+
+        //execução
+        Throwable exception = Assertions.catchThrowable(() -> ticketService.create(ticket));
+
+        //verificações
+        assertThat(exception)
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("Titulo e Descrição não podem serem iguais.");
     }
 }

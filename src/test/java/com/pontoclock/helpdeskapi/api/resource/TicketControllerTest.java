@@ -2,6 +2,7 @@ package com.pontoclock.helpdeskapi.api.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pontoclock.helpdeskapi.api.exceptions.BusinessException;
 import com.pontoclock.helpdeskapi.api.models.TicketDTO;
 import com.pontoclock.helpdeskapi.api.models.entities.Ticket;
 import com.pontoclock.helpdeskapi.api.service.TicketService;
@@ -34,6 +35,13 @@ public class TicketControllerTest {
                     .id(1l)
                     .titulo("titulo ticket")
                     .descricao("descrição ticket")
+                    .build();
+
+    TicketDTO ticketDTOTituloEDescIgual =
+            TicketDTO.builder()
+                    .id(1l)
+                    .titulo("titulo ticket")
+                    .descricao("titulo ticket")
                     .build();
 
     Ticket ticket =
@@ -74,6 +82,26 @@ public class TicketControllerTest {
     public void createInvalidTicketTest() throws Exception {
         BDDMockito.given(ticketService.create(Mockito.any(Ticket.class))).willReturn(this.ticket);
         String json = new ObjectMapper().writeValueAsString(new TicketDTO());
+
+        MockHttpServletRequestBuilder request =
+                MockMvcRequestBuilders
+                        .post(TICKET_ENDPOINT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(json);
+
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("errors").exists());
+    }
+
+    @Test
+    @DisplayName("Deve lançar erro se o titulo for igual a descrição")
+    public void createTicketComTituloEDescricaoIguaisTest() throws Exception {
+
+        BDDMockito.given(ticketService.create(Mockito.any(Ticket.class)))
+                .willThrow(new BusinessException("Título e Descrição da tarefas devem ser diferentes."));
+        String json = new ObjectMapper().writeValueAsString(ticketDTOTituloEDescIgual);
 
         MockHttpServletRequestBuilder request =
                 MockMvcRequestBuilders

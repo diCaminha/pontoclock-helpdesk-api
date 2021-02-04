@@ -1,6 +1,7 @@
 package com.pontoclock.helpdeskapi.api.resource;
 
 import com.pontoclock.helpdeskapi.api.exceptions.ApiErrors;
+import com.pontoclock.helpdeskapi.api.exceptions.BusinessException;
 import com.pontoclock.helpdeskapi.api.models.TicketDTO;
 import com.pontoclock.helpdeskapi.api.models.entities.Ticket;
 import com.pontoclock.helpdeskapi.api.service.TicketService;
@@ -37,5 +38,11 @@ public class TicketController {
     public ApiErrors handleValidationExceptions(MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
         return new ApiErrors(bindingResult);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleBusinessExceptions(BusinessException ex) {
+        return new ApiErrors(ex);
     }
 }
