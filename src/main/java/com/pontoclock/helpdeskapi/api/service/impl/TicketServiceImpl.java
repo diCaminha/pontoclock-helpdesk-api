@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TicketServiceImpl implements TicketService {
 
@@ -40,5 +42,10 @@ public class TicketServiceImpl implements TicketService {
                         .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING));
 
         return this.ticketRepository.findAll(example, pageRequest);
+    }
+
+    @Override
+    public Optional<Ticket> findById(Long id) {
+        return ticketRepository.findById(id);
     }
 }
